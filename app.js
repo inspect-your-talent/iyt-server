@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var github = require('./routes/github');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/github', github);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

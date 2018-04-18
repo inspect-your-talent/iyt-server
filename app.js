@@ -10,6 +10,7 @@ const dbURL = 'mongodb://inspecta-db-user:Cl9EAyHVeuHZpp9c@inspecta-shard-00-00-
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const uploadCV = require('./routes/uploadCv');
 const github = require('./routes/github');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/upload-cv', uploadCV);
 app.use('/github', github);
 
 mongoose.connect(dbURL, err => {

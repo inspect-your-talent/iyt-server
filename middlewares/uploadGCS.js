@@ -1,4 +1,5 @@
 const Storage = require('@google-cloud/storage');
+const Vision = require('@google-cloud/vision');
 const config = {
   CLOUD_BUCKET: 'e-commerce.rezapramudhika.com',
   PROJECT_ID: 'e-commerce',
@@ -9,6 +10,12 @@ const storage = Storage({
   projectId: config.PROJECT_ID,
   keyFilename: 'reza-pramudhika-da139832d53a.json'
 });
+
+const client = new Vision.ImageAnnotatorClient({
+  projectId: config.PROJECT_ID,
+  keyFilename: 'reza-pramudhika-da139832d53a.json',
+});
+
 
 // set which bucket
 const bucket = storage.bucket(config.CLOUD_BUCKET);
@@ -59,4 +66,6 @@ function sendUploadToGCS (req, res, next) {
 
 module.exports = {
   sendUploadToGCS,
+  Vision,
+  client
 };

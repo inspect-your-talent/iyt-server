@@ -10,6 +10,7 @@
   "dependencies": {
     "@google-cloud/storage": "^1.6.0",
     "@google-cloud/vision": "^0.19.0",
+    "axios": "^0.18.0",
     "body-parser": "~1.18.2",
     "cheerio": "^1.0.0-rc.2",
     "cookie-parser": "~1.4.3",

@@ -30,3 +30,17 @@ describe('Github Profile', () => {
         })
     })
 })
+
+describe('Facebook Profile', () => {
+  it('should get data from facebook profile', () => {
+    chai.request(app)
+      .get('/facebook/gustafpahlevi')
+      .end((err, res) => {
+        expect(res).to.have.status(200)
+        expect(res).to.have.property('experiences').to.be.an('array')
+        expect(res).to.have.property('name').to.be.a('string')
+        expect(res).to.have.property('favorites').to.be.an('array')
+        expect(res).to.have.property('photo_profile').to.be.a('string')
+      })
+  })
+})

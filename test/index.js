@@ -31,6 +31,24 @@ describe('Github Profile', () => {
     })
 })
 
+describe('Twitter Profile', () => {
+  it('should data from twitter profile', () => {
+    chai.request(app)
+      .get('/twitter/sitirohimahzha')
+      .end((err, res) => {
+        expect(res).to.have.status(200)
+        expect(res).to.have.property('name')
+        expect(res.name).to.equal('Siti Rohimah')
+        expect(res).to.have.property('posts')
+        expect(res.post).to.be.an(Array)
+        expect(res).to.have.property('tweets')
+        expect(res).to.have.property('following')
+        expect(res).to.have.property('followers')
+        expect(res).to.have.property('likes')
+       })
+  })
+})
+
 describe('Facebook Profile', () => {
   it('should get data from facebook profile', () => {
     chai.request(app)

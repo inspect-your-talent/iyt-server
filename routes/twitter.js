@@ -20,16 +20,15 @@ router.get('/', function(req, res, next) {
       return $(this).text();
     }).get();
     const profileHeader = $("p.ProfileHeaderCard-bio").text()
-    const linkWebsite = $("a.ProfileNav-stat > span.ProfileHeaderCard-urlText").text()
+    const linkWebsite = $("a.u-textUserColor").text().split('\n')[13].trim()
     const history = $("span.ProfileNav-value").map(function(){
       return $(this).text();
     }).get()
-    // const following = $("a.u-textUserColor").text()
     const tweets = history[0].split('\n')[0]
     const following = history[1].split('\n')[0]
     const followers = history[2].split('\n')[0]
     const likes = history[3].split('\n')[0]
-    console.log(history[2].split('\n')[0])
+    console.log(linkWebsite)
       res.json({
         message: "success",
         name,

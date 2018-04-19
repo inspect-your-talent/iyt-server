@@ -28,10 +28,13 @@ router.get('/:username', function (req, res, next) {
 
         let photo_profile = $('div.photoContainer > div > div > img.img').attr('src');
 
+        let name = $('span#fb-timeline-cover-name').text();
+
         res.json({
+            name,
+            photo_profile,
             experiences,
-            favorites,
-            photo_profile
+            favorites
         })
     });
 });

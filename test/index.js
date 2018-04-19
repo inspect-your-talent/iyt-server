@@ -32,7 +32,7 @@ describe('Github Profile', () => {
 })
 
 describe('Twitter Profile', () => {
-  it('should data from twitter profile', () => {
+  it('should get data from twitter profile', () => {
     chai.request(app)
       .get('/twitter/sitirohimahzha')
       .end((err, res) => {
@@ -40,7 +40,7 @@ describe('Twitter Profile', () => {
         expect(res).to.have.property('name')
         expect(res.name).to.equal('Siti Rohimah')
         expect(res).to.have.property('posts')
-        expect(res.post).to.be.an(Array)
+        expect(res.posts).to.be.an(Array)
         expect(res).to.have.property('tweets')
         expect(res).to.have.property('following')
         expect(res).to.have.property('followers')

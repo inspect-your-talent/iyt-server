@@ -3,4 +3,6 @@ client-secret.json
 credentials.tar.gz
 reza-pramudhika-da139832d53a.json
 yarn-error.log
+.DS_Store
 yarn.lock
+

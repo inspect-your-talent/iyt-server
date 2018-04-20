@@ -1,5 +1,6 @@
 node_modules/
 client-secret.json
 credentials.tar.gz
-reza-pramudhika-da139832d53a.json
 .DS_Store
+reza-pramudhika-da139832d53a.json
+yarn.lock

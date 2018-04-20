@@ -1,48 +1,83 @@
 var express = require('express');
 var router = express.Router();
-const {sendUploadToGCS, Vision, client} = require('../middlewares/uploadGCS')
+const { sendUploadToGCS, Vision, client } = require('../middlewares/uploadGCS')
 const memUpload = require('../middlewares/multer')
+const axios = require('axios');
 
-router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res ) => {
+const request = axios.create({
+    baseURL: 'http://localhost:3000'
+})
+
+router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
 
     client
         .textDetection(req.file.cloudStoragePublicUrl)
-        .then(results => {
+        .then(async results => {
+            try {
+                const text = results[0].fullTextAnnotation.text;
+                let splitData = text.split('\n');
+                let facebookProfile = '';
+                let twitterProfile = '';
+                let githubProfile = '';
 
-            const text = results[0].fullTextAnnotation.text;
-            let splitData = text.split('\n');
-            let facebookProfile = '';
-            let twitterProfile = '';
-            let githubProfile = '';
-
-            splitData.map((data, index) => {
+                splitData.map((data, index) => {
                     const splitSpaceData = data.split(' ')
                     splitSpaceData.map(coreData => {
                         if (coreData.indexOf('twitter.com/') !== -1) {
                             // console.log(coreData, ' ini twitter')
-                            facebookProfile = coreData;
+                            let twitterRaw = coreData.split('/');
+                            twitterProfile = twitterRaw[twitterRaw.length-1];;
                         }
                         if (coreData.indexOf('fb.com/') !== -1 || coreData.indexOf('facebook.com/') !== -1) {
                             // console.log(coreData, ' ini facebook')
-                            twitterProfile = coreData;
+                            let facebookRaw = coreData.split('/');
+                            facebookProfile = facebookRaw[facebookRaw.length-1];;
                         }
                         if (coreData.indexOf('github.com/') !== -1) {
                             // console.log(coreData, ' ini github')
-                            githubProfile = coreData
+                            let githubRaw = coreData.split('/');
+                            githubProfile = githubRaw[githubRaw.length-1];
                         }
                     })
                 }
-            );
+                );
+                if (!facebookProfile && !twitterProfile && !githubProfile) {
+                    return res.status(401).json({
+                        message: 'No data found'
+                    })
+                }
+                // console.log(twitterProfile, githubProfile, facebookProfile)
+                const twitterAnalyzing = await request.get(`/twitter/${twitterProfile}`);
+                const facebookAnalyzing = await request.get(`/facebook/${facebookProfile}`)
+                const githubAnalyzing = await request.get(`/github/${githubProfile}`)
 
-            return res.status(200).json({
-                message: 'Success to upload image',
-                data: req.file.cloudStoragePublicUrl,
-                facebookProfile,
-                twitterProfile,
-                githubProfile,
-            })
+                let obj = {
+                    message: 'Success to upload image',
+                    data: req.file.cloudStoragePublicUrl,
+                    facebookProfile,
+                    twitterProfile,
+                    githubProfile,
+                    twitterAnalyzing: twitterAnalyzing.data,
+                    facebookAnalyzing: facebookAnalyzing.data,
+                    githubAnalyzing: githubAnalyzing.data
+                }
 
-
+                console.log(obj)
+                return res.status(200).json({
+                    message: 'Success to upload image',
+                    data: req.file.cloudStoragePublicUrl,
+                    facebookProfile,
+                    twitterProfile,
+                    githubProfile,
+                    twitterAnalyzing: twitterAnalyzing.data,
+                    facebookAnalyzing: facebookAnalyzing.data,
+                    githubAnalyzing: githubAnalyzing.data
+                })
+            } catch (error) {
+                return res.status(500).json({
+                    message: 'Internal server error'
+                })
+            }
         })
         .catch(err => {
             console.error('ERROR:', err);

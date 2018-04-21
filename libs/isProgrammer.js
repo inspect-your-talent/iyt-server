@@ -20,19 +20,19 @@ function checkIsProgrammer (text) {
   let arrMatch = []
 
   checkArr.forEach(word => {
-    if(dictionary.indexOf(word) !== -1) {
-        const check = arrMatch.filter(text => text.word === word)
+    if(dictionary.indexOf(word.toLowerCase()) !== -1) {
+        const check = arrMatch.filter(text => text.word === word.toLowerCase())
         if (check.length) {
           arrMatch.map(text => {
-            if (text.word === word) {
-              return { word: word, count: text.count++ }
+            if (text.word === word.toLowerCase()) {
+              return { word: word.toLowerCase(), count: text.count++ }
             } else {
               return text
             }
           })
         } else {
           arrMatch.push({
-            word: word,
+            word: word.toLowerCase(),
             count: 1
           })
         }

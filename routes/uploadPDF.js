@@ -58,11 +58,10 @@ router.post('/', upload.single('cv_file'), (req, res) => {
 
           console.log(facebookProfile, twitterProfile, githubProfile);
           if (!facebookProfile && !twitterProfile && !githubProfile) {
-
+              // 
               // return res.status(401).json({
               //     message: 'No data found'
               // })
-              
           } else {
             // console.log(twitterProfile, githubProfile, facebookProfile)
             const twitterAnalyzing = await request.get(`/twitter/${twitterProfile}`);

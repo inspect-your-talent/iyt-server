@@ -14,6 +14,7 @@ const uploadCV = require('./routes/uploadCv');
 const github = require('./routes/github');
 const twitter = require('./routes/twitter')
 const facebook = require('./routes/facebook');
+const uploadPDF = require('./routes/uploadPDF');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use('/upload-cv', uploadCV);
 app.use('/github', github);
 app.use('/twitter', twitter);
 app.use('/facebook', facebook);
+app.use('/upload-pdf', uploadPDF);
 
 mongoose.connect(dbURL, err => {
   if (!err)

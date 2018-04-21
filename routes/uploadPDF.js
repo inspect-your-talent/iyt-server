@@ -17,6 +17,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 const PdfReader = require('pdfreader')
+const mergeDataAndAnalyze = require('../libs/mergeAnalyze')
+
 
 const request = axios.create({
     baseURL: 'http://localhost:3000'
@@ -58,17 +60,17 @@ router.post('/', upload.single('cv_file'), (req, res) => {
 
           console.log(facebookProfile, twitterProfile, githubProfile);
           if (!facebookProfile && !twitterProfile && !githubProfile) {
-
+              //
               // return res.status(401).json({
               //     message: 'No data found'
               // })
-              
           } else {
             // console.log(twitterProfile, githubProfile, facebookProfile)
             const twitterAnalyzing = await request.get(`/twitter/${twitterProfile}`);
             const facebookAnalyzing = await request.get(`/facebook/${facebookProfile}`)
             const githubAnalyzing = await request.get(`/github/${githubProfile}`)
 
+            const resultIsProgrammer = mergeDataAndAnalyze(twitterAnalyzing.data, facebookAnalyzing.data)
             let obj = {
                 message: 'Success to upload image',
                 data: req.file.cloudStoragePublicUrl,
@@ -77,7 +79,8 @@ router.post('/', upload.single('cv_file'), (req, res) => {
                 githubProfile,
                 twitterAnalyzing: twitterAnalyzing.data,
                 facebookAnalyzing: facebookAnalyzing.data,
-                githubAnalyzing: githubAnalyzing.data
+                githubAnalyzing: githubAnalyzing.data,
+                isProgrammer: resultIsProgrammer
             }
 
             console.log(obj)
@@ -89,7 +92,8 @@ router.post('/', upload.single('cv_file'), (req, res) => {
                 githubProfile,
                 twitterAnalyzing: twitterAnalyzing.data,
                 facebookAnalyzing: facebookAnalyzing.data,
-                githubAnalyzing: githubAnalyzing.data
+                githubAnalyzing: githubAnalyzing.data,
+                isProgrammer: resultIsProgrammer
             })
           }
 

@@ -3,10 +3,10 @@ var router = express.Router();
 const { sendUploadToGCS, Vision, client } = require('../middlewares/uploadGCS')
 const memUpload = require('../middlewares/multer')
 const axios = require('axios');
-
 const request = axios.create({
     baseURL: 'http://localhost:3000'
 })
+const mergeDataAndAnalyze = require('../libs/mergeAnalyze')
 
 router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
 
@@ -51,6 +51,7 @@ router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
                 const facebookAnalyzing = await request.get(`/facebook/${facebookProfile}`)
                 const githubAnalyzing = await request.get(`/github/${githubProfile}`)
 
+                const resultIsProgrammer = mergeDataAndAnalyze(twitterAnalyzing.data, facebookAnalyzing.data)
                 let obj = {
                     message: 'Success to upload image',
                     data: req.file.cloudStoragePublicUrl,
@@ -59,7 +60,8 @@ router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
                     githubProfile,
                     twitterAnalyzing: twitterAnalyzing.data,
                     facebookAnalyzing: facebookAnalyzing.data,
-                    githubAnalyzing: githubAnalyzing.data
+                    githubAnalyzing: githubAnalyzing.data,
+                    isProgrammer: resultIsProgrammer
                 }
 
                 console.log(obj)
@@ -71,7 +73,8 @@ router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
                     githubProfile,
                     twitterAnalyzing: twitterAnalyzing.data,
                     facebookAnalyzing: facebookAnalyzing.data,
-                    githubAnalyzing: githubAnalyzing.data
+                    githubAnalyzing: githubAnalyzing.data,
+                    isProgrammer: resultIsProgrammer
                 })
             } catch (error) {
                 return res.status(500).json({

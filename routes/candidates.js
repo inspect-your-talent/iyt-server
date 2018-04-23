@@ -45,7 +45,7 @@ router.get('/details/:id', function (req, res, next) {
     })
     res.status(200).json({
       message: "Success get data detail candidate",
-      data: filtered
+      data: filtered[0]
     })
   })
 });

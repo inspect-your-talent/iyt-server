@@ -53,8 +53,6 @@ router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
 
                 const resultIsProgrammer = mergeDataAndAnalyze(twitterAnalyzing.data, facebookAnalyzing.data)
                 let obj = {
-                    message: 'Success to upload image',
-                    data: req.file.cloudStoragePublicUrl,
                     facebookProfile,
                     twitterProfile,
                     githubProfile,
@@ -67,14 +65,7 @@ router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {
                 console.log(obj)
                 return res.status(200).json({
                     message: 'Success to upload image',
-                    data: req.file.cloudStoragePublicUrl,
-                    facebookProfile,
-                    twitterProfile,
-                    githubProfile,
-                    twitterAnalyzing: twitterAnalyzing.data,
-                    facebookAnalyzing: facebookAnalyzing.data,
-                    githubAnalyzing: githubAnalyzing.data,
-                    isProgrammer: resultIsProgrammer
+                    data: obj
                 })
             } catch (error) {
                 return res.status(500).json({

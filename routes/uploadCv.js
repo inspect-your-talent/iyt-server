@@ -4,7 +4,7 @@ const { sendUploadToGCS, Vision, client } = require('../middlewares/uploadGCS')
 const memUpload = require('../middlewares/multer')
 const axios = require('axios');
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = process.env.PORT || '3000';
 const request = axios.create({
     baseURL: 'http://localhost:' + port
 })

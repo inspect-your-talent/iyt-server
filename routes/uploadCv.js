@@ -3,9 +3,12 @@ var router = express.Router();
 const { sendUploadToGCS, Vision, client } = require('../middlewares/uploadGCS')
 const memUpload = require('../middlewares/multer')
 const axios = require('axios');
+
+const port = normalizePort(process.env.PORT || '3000');
 const request = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: 'http://localhost:' + port
 })
+
 const mergeDataAndAnalyze = require('../libs/mergeAnalyze')
 
 router.post('/', memUpload.single('image'), sendUploadToGCS, (req, res) => {

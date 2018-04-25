@@ -34,7 +34,6 @@ router.get('/:username', function (req, res, next) {
     const tweets = history[0].split('\n')[0]
     const following = history[1].split('\n')[0]
     const followers = history[2].split('\n')[0]
-    const likes = history[3].split('\n')[0]
 
     const checkSA = posts.join(' ')
     
@@ -50,7 +49,6 @@ router.get('/:username', function (req, res, next) {
           tweets,
           following,
           followers,
-          likes,
           posts,
           score: response.data
         })

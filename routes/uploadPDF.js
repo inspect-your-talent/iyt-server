@@ -19,7 +19,7 @@ const upload = multer({ storage: storage })
 const PdfReader = require('pdfreader')
 const mergeDataAndAnalyze = require('../libs/mergeAnalyze')
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = process.env.PORT || '3000';
 const request = axios.create({
     baseURL: 'http://localhost:' + port
 })

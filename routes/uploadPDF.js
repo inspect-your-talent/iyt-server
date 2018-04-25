@@ -19,9 +19,9 @@ const upload = multer({ storage: storage })
 const PdfReader = require('pdfreader')
 const mergeDataAndAnalyze = require('../libs/mergeAnalyze')
 
-
+const port = normalizePort(process.env.PORT || '3000');
 const request = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: 'http://localhost:' + port
 })
 
 router.post('/', upload.single('cv_file'), (req, res) => {
